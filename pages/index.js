@@ -59,7 +59,7 @@ export default function Home() {
               console.log('Campo: ', dadosDoForm.get('title'));
               console.log('Campo: ', dadosDoForm.get('image'));
               const comunidade = {
-                titulo: dadosDoForm.get('title'),
+                title: dadosDoForm.get('title'),
                 image: dadosDoForm.get('image'),
               }
               e.preventDefault();
@@ -95,7 +95,7 @@ export default function Home() {
             <ul>
               {comunidades.map((itemAtual) => {
                 return (
-                  <li key={itemAtual.title}>
+                  <li key={itemAtual.id}>
                     <a href={`/users/${itemAtual.title}`} >
                       <img src={itemAtual.image} />
                       <span>{itemAtual.title}</span>
