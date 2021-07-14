@@ -24,6 +24,7 @@ function ProfileSlide(props) {
 
 export default function Home() {
   const [comunidades, setComunidades] = React.useState([{
+    id: '219387',
     title: 'eu odeio segunda-feira',
     image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
   }]);
@@ -59,6 +60,7 @@ export default function Home() {
               console.log('Campo: ', dadosDoForm.get('title'));
               console.log('Campo: ', dadosDoForm.get('image'));
               const comunidade = {
+                id: new Date().toISOString,
                 title: dadosDoForm.get('title'),
                 image: dadosDoForm.get('image'),
               }
@@ -128,8 +130,6 @@ export default function Home() {
               })}
 
             </ul>
-
-
           </ProfileRelationsBoxWrapper>
 
         </div>
