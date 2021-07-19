@@ -6,7 +6,7 @@ import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations';
 
 function ProfileSlide(props) {
   return (
-    <Box>
+    <Box as="aside">
       <img src={`https://github.com/${props.githubUser}.png`} style={{ borderRadius: '8px' }} />
       <hr />
       <p>
@@ -19,6 +19,31 @@ function ProfileSlide(props) {
       <hr />
       <AlurakutProfileSidebarMenuDefault />
     </Box>
+  )
+}
+
+function ProfileRelationsBox(props) {
+  return (
+    <ProfileRelationsBoxWrapper >
+      <h2 className="smallTitle">
+        {props.title} ({props.items.length})
+      </h2>
+      <ul>
+        {/*               {seguidores.map((itemAtual) => {
+        return (
+          <li key={itemAtual}>
+            <a href={`https://github.com/${itemAtual}.png`} >
+              <img src={itemAtual.image} />
+              <span>{itemAtual.title}</span>
+            </a>
+
+          </li>
+
+        )
+      })} */}
+
+      </ul>
+    </ProfileRelationsBoxWrapper>
   )
 }
 
@@ -36,11 +61,29 @@ export default function Home() {
     'peas',
     'rafaballerini',
     'marcobrunodev',
-    'felipefialho']
+    'felipefialho',
+    'guilhermesilveira'
+  ]
+  const [seguidores,setSeguidores] = React.useState([]);
+
+  // 0 - Pegar o array de dados do github
+
+  React.useEffect(function () {
+    fetch('https://api.github.com/users/nicolasestanislau/followers')
+      .then(function (respostaDoServidor) {
+        return respostaDoServidor.json();
+      })
+      .then(function (respostaCompleta) {
+        setSeguidores(respostaCompleta);
+
+      })
+  }, [])
+  console.log('seguidores antes do return', seguidores)
+  // 1 - Criar um box que vai ter um map, baseado nos items do array que pegamos do GitHub
 
   return (
     <>
-      <AlurakutMenu />
+      <AlurakutMenu githubUser={usuarioAletorio} />
       <MainGrid>
         <div className="profileArea" style={{ gridArea: 'profileArea' }}>
           <ProfileSlide githubUser={usuarioAletorio} />
@@ -93,7 +136,12 @@ export default function Home() {
 
         </div>
         <div className="profileRelationsArea" style={{ gridArea: 'profileRelationsArea' }}>
+
+          <ProfileRelationsBox title="Seguidores" items={seguidores} />
           <ProfileRelationsBoxWrapper >
+            <h2 className="smallTitle">
+              Comunidades ({comunidades.length})
+            </h2>
             <ul>
               {comunidades.map((itemAtual) => {
                 return (
