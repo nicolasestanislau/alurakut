@@ -48,11 +48,7 @@ function ProfileRelationsBox(props) {
 }
 
 export default function Home() {
-  const [comunidades, setComunidades] = React.useState([{
-    id: '219387',
-    title: 'eu odeio segunda-feira',
-    image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
-  }]);
+  const [comunidades, setComunidades] = React.useState([]);
   const usuarioAletorio = 'nicolasestanislau';
   // const comunidades = ['Alurakut'];
   const pessoasFavoritas = [
@@ -64,7 +60,7 @@ export default function Home() {
     'felipefialho',
     'guilhermesilveira'
   ]
-  const [seguidores,setSeguidores] = React.useState([]);
+  const [seguidores, setSeguidores] = React.useState([]);
 
   // 0 - Pegar o array de dados do github
 
@@ -75,6 +71,31 @@ export default function Home() {
       })
       .then(function (respostaCompleta) {
         setSeguidores(respostaCompleta);
+
+      })
+    // API GraphQL
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        'Authorization': '49f5afcfd68696e6b2b29f194fbbc0',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        "query": `query {
+        allCommunities {
+          id
+          title
+          imageUrl
+          creatorSlug
+        }
+      }` })
+    })
+      .then((response) => response.json()) // Pega o retorno do response
+      .then((respostaCompleta) => {
+        const comunidadesVindasDoDato = respostaCompleta.data.allCommunities
+        console.log(comunidadesVindasDoDato)
+        setComunidades(comunidadesVindasDoDato)
 
       })
   }, [])
@@ -146,16 +167,13 @@ export default function Home() {
               {comunidades.map((itemAtual) => {
                 return (
                   <li key={itemAtual.id}>
-                    <a href={`/users/${itemAtual.title}`} >
-                      <img src={itemAtual.image} />
+                    <a href={`/communities/${itemAtual.id}`} >
+                      <img src={itemAtual.imageUrl} />
                       <span>{itemAtual.title}</span>
                     </a>
-
                   </li>
-
                 )
               })}
-
             </ul>
           </ProfileRelationsBoxWrapper>
           <ProfileRelationsBoxWrapper >
